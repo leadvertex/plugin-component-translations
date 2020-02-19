@@ -41,9 +41,7 @@ class LangAddCommand extends CrawlerCommand
             throw new RuntimeException("File '{$lang}.json' already exists");
         }
 
-        $json = $this->schemeToExport($scheme);
-
-        file_put_contents($filename, $this->asJson($json));
+        file_put_contents($filename, $this->asJson($scheme));
 
         return 0;
     }
