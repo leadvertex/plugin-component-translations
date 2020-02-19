@@ -38,6 +38,11 @@ class Translator
         );
     }
 
+    public static function getDefaultLang(): string
+    {
+        return static::$default;
+    }
+
     public static function getLang(): string
     {
         static::guardNotConfigured();
