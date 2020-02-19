@@ -1,0 +1,27 @@
+{
+  "name": "leadvertex/plugin-component-translations",
+  "description": "LeadVertex plugin translations component",
+  "type": "library",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Timur Kasumov aka XAKEPEHOK",
+      "email": "support@leadvertex.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Leadvertex\\Plugin\\Components\\Translations\\": "src/"
+    }
+  },
+  "require": {
+    "php": ">=7.1.0",
+    "ext-json": "*",
+    "nikic/php-parser": "^4.3",
+    "symfony/console": "^5.0",
+    "haydenpierce/class-finder": "^0.4.0",
+    "adbario/php-dot-notation": "^2.2",
+    "xakepehok/path": "^0.1"
+  }
+}

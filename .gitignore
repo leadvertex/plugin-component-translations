@@ -1,0 +1,5 @@
+/vendor/
+.idea/
+translations/
+composer.lock
+console.php
