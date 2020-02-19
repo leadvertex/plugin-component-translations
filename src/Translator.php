@@ -17,6 +17,7 @@ class Translator
 {
 
     protected static $default;
+
     protected static $lang;
 
     public static function config(string $default)
@@ -32,7 +33,9 @@ class Translator
     public static function getLanguages(): array
     {
         static::guardNotConfigured();
-        return array_merge(Helper::getLanguages(), [static::$default]);
+        return array_unique(
+            array_merge(Helper::getLanguages(), [static::$default])
+        );
     }
 
     public static function getLang(): string
@@ -44,7 +47,6 @@ class Translator
     public static function setLang(string $lang)
     {
         static::guardNotConfigured();
-
         if (in_array($lang, static::getLanguages())) {
             static::$lang = $lang;
         }
