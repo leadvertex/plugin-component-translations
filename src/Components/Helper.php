@@ -1,6 +1,6 @@
 <?php
 /**
- * Created for plugin-component-i18n
+ * Created for plugin-component-translations
  * Datetime: 19.02.2020 15:54
  * @author Timur Kasumov aka XAKEPEHOK
  */
