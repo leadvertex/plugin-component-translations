@@ -5,12 +5,12 @@
  * @author Timur Kasumov aka XAKEPEHOK
  */
 
-namespace Leadvertex\Plugin\Components\I18n;
+namespace Leadvertex\Plugin\Components\Translations;
 
 
 use Adbar\Dot;
 use InvalidArgumentException;
-use Leadvertex\Plugin\Components\I18n\Components\Helper;
+use Leadvertex\Plugin\Components\Translations\Components\Helper;
 use RuntimeException;
 
 class Translator
@@ -38,7 +38,7 @@ class Translator
         );
     }
 
-    public static function getDefaultLang(): string
+    public static function getDefaultLang(): ?string
     {
         return static::$default;
     }
@@ -46,7 +46,7 @@ class Translator
     public static function getLang(): string
     {
         static::guardNotConfigured();
-        return static::getLang();
+        return static::$lang;
     }
 
     public static function setLang(string $lang)
@@ -88,10 +88,12 @@ class Translator
 
             $associative = [];
             foreach ($translations as $category => $translation) {
-                $associative[$category][$translation[0]] = $translation[1];
+                foreach ($translation as $value) {
+                    $associative[$category][$value['source']] = $value['translated'];
+                }
             }
 
-            return new Dot($translations);
+            return new Dot($associative);
         }
 
         return new Dot([]);

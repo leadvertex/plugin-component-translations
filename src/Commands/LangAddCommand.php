@@ -5,7 +5,7 @@
  * @author Timur Kasumov aka XAKEPEHOK
  */
 
-namespace Leadvertex\Plugin\Components\I18n\Commands;
+namespace Leadvertex\Plugin\Components\Translations\Commands;
 
 
 use RuntimeException;
@@ -23,7 +23,7 @@ class LangAddCommand extends CrawlerCommand
         $this->addArgument(
             'lang',
             InputArgument::REQUIRED,
-            'Create new translation file in some language (en-US, ru-RU)'
+            'Create new translation file in some language (en_US, ru_RU)'
         );
     }
 

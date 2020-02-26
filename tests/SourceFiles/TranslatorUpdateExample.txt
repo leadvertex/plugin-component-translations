@@ -1,0 +1,17 @@
+<?php
+
+
+namespace Leadvertex\Plugin\Components\Translations;
+
+
+class TranslatorUpdateExample
+{
+    public static function lines()
+    {
+        Translator::get('main', 'Тестовое сообщение');
+        Translator::get('second', 'Тестовое сообщение');
+        Translator::get('third', 'Новое сообщение');
+        Translator::get('second', '');
+        Translator::get('main', 'Сообщение с {delay}');
+    }
+}

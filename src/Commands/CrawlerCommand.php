@@ -5,12 +5,12 @@
  * @author Timur Kasumov aka XAKEPEHOK
  */
 
-namespace Leadvertex\Plugin\Components\I18n\Commands;
+namespace Leadvertex\Plugin\Components\Translations\Commands;
 
 
 use Adbar\Dot;
 use HaydenPierce\ClassFinder\ClassFinder;
-use Leadvertex\Plugin\Components\I18n\Components\Helper;
+use Leadvertex\Plugin\Components\Translations\Components\Helper;
 use PhpParser\ParserFactory;
 use ReflectionClass;
 use Symfony\Component\Console\Command\Command;
@@ -52,6 +52,7 @@ abstract class CrawlerCommand extends Command
 
     protected function crawl(): array
     {
+        ClassFinder::enablePSR4Support();
         $classes = ClassFinder::getClassesInNamespace('Leadvertex\Plugin', ClassFinder::RECURSIVE_MODE);
 
         $scheme = [];
@@ -90,14 +91,6 @@ abstract class CrawlerCommand extends Command
             }
 
             if ($node->get('expr.nodeType') !== 'Expr_StaticCall') {
-                continue;
-            }
-
-            if ($node->get('expr.class.nodeType') !== 'Name') {
-                continue;
-            }
-
-            if ($node->get('expr.class.parts.0') !== 'Translator') {
                 continue;
             }
 

@@ -3,3 +3,4 @@
 translations/
 composer.lock
 console.php
+/src/TranslatorExample.php

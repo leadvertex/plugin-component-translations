@@ -1,0 +1,21 @@
+<?php
+
+
+namespace Leadvertex\Plugin\Components\Translations;
+
+
+class TranslatorExample
+{
+    public static function lines()
+    {
+        $message = 'Ignored message';
+        $category = 'ignored';
+        Translator::get('main', $message);
+        Translator::get($category, 'Ignore this');
+        Translator::get('main', 'Тестовое сообщение');
+        Translator::get('second', 'Тестовое сообщение');
+        Translator::get('third', 'Тестовое сообщение');
+        Translator::get('second', '');
+        Translator::get('main', 'Сообщение с {delay}');
+    }
+}
