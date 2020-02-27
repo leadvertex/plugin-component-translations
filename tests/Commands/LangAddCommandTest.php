@@ -7,7 +7,6 @@ use Leadvertex\Plugin\Components\Translations\Components\CommandTestCase;
 use RuntimeException;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Filesystem\Filesystem;
-use XAKEPEHOK\Path\Path;
 
 class LangAddCommandTest extends CommandTestCase
 {
@@ -16,13 +15,13 @@ class LangAddCommandTest extends CommandTestCase
         parent::setUpBeforeClass();
 
         $filesystem = new Filesystem();
-        $translatorPath = (string) (new Path(self::$pathToRootDir))->down('TranslatorExample.php');
+        $translatorPath = (string) self::$pathToRootDir->down('TranslatorExample.php');
 
         if ($filesystem->exists($translatorPath)) {
             $filesystem->remove($translatorPath);
         }
 
-        $filesystem->copy((string) (new Path(self::$pathToTestsSourceFiles))->down('TranslatorExample.txt'), $translatorPath);
+        $filesystem->copy((string) self::$pathToTestsSourceFiles->down('TranslatorExample.txt'), $translatorPath);
     }
 
     public function testExecuteCommand()
@@ -30,7 +29,7 @@ class LangAddCommandTest extends CommandTestCase
         $cmdTester = new CommandTester(new LangAddCommand());
         $cmdTester->execute(['lang' => 'fr_FR']);
         $filesystem = new Filesystem();
-        $translationPath  = (string) (new Path(__DIR__))->up()->up()->down('translations')->down('fr_FR.json');
+        $translationPath  = (string) self::$pathToTranslations->down('fr_FR.json');
         $this->assertTrue($filesystem->exists($translationPath));
         $translation = json_decode(file_get_contents($translationPath), true);
 
@@ -77,7 +76,7 @@ class LangAddCommandTest extends CommandTestCase
         parent::tearDownAfterClass();
 
         $filesystem = new Filesystem();
-        $translatorPath = (string) (new Path(self::$pathToRootDir))->down('TranslatorExample.php');
+        $translatorPath = (string) self::$pathToRootDir->down('TranslatorExample.php');
 
         if ($filesystem->exists($translatorPath)) {
             $filesystem->remove($translatorPath);
