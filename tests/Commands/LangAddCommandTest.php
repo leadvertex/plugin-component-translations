@@ -3,33 +3,26 @@
 namespace Leadvertex\Plugin\Components\Translations\Commands;
 
 use InvalidArgumentException;
-use PHPUnit\Framework\TestCase;
+use Leadvertex\Plugin\Components\Translations\Components\CommandTestCase;
 use RuntimeException;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Filesystem\Filesystem;
 use XAKEPEHOK\Path\Path;
 
-class LangAddCommandTest extends TestCase
+class LangAddCommandTest extends CommandTestCase
 {
     public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
 
         $filesystem = new Filesystem();
-        $translationsPath = (string) (new Path(__DIR__))->up()->up()->down('translations');
-        $sourceTranslationsPath = (string) (new Path(__DIR__))->up()->down('SourceFiles')->down('translations');
-        $translatorPath = (string) (new Path(__DIR__))->up()->up()->down('src')->down('TranslatorExample.php');
-
-        if ($filesystem->exists($translationsPath)) {
-            $filesystem->remove($translationsPath);
-        }
+        $translatorPath = (string) (new Path(self::$pathToRootDir))->down('TranslatorExample.php');
 
         if ($filesystem->exists($translatorPath)) {
             $filesystem->remove($translatorPath);
         }
 
-        $filesystem->copy((string) (new Path(__DIR__))->up()->down('SourceFiles')->down('TranslatorExample.txt'), $translatorPath);
-        $filesystem->mirror($sourceTranslationsPath, $translationsPath);
+        $filesystem->copy((string) (new Path(self::$pathToTestsSourceFiles))->down('TranslatorExample.txt'), $translatorPath);
     }
 
     public function testExecuteCommand()
@@ -41,10 +34,17 @@ class LangAddCommandTest extends TestCase
         $this->assertTrue($filesystem->exists($translationPath));
         $translation = json_decode(file_get_contents($translationPath), true);
 
+
         $this->assertArrayNotHasKey('ignored', $translation);
         foreach ($translation['main'] as $line) {
             $this->assertNotEquals('Ignored message', $line['source']);
         }
+
+        $this->assertTrue($this->translationHasLine($translation['main'], 'func'));
+        $this->assertTrue($this->translationHasLine($translation['main'], 'class:func'));
+        $this->assertTrue($this->translationHasLine($translation['main'], 'class:func:func'));
+        $this->assertTrue($this->translationHasLine($translation['main'], 'class:func:class:func'));
+        $this->assertTrue($this->translationHasLine($translation['main'], 'class:func:class:func:func'));
 
     }
 
@@ -62,13 +62,25 @@ class LangAddCommandTest extends TestCase
         $cmdTester->execute(['lang' => 'en_US']);
     }
 
+    private function translationHasLine(array $translation, string $needle): bool
+    {
+        foreach ($translation as $line) {
+            if ($line['source'] === $needle) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static function tearDownAfterClass(): void
     {
         parent::tearDownAfterClass();
+
         $filesystem = new Filesystem();
-        $translationPath  = (string) (new Path(__DIR__))->up()->up()->down('translations')->down('fr_FR.json');
-        if ($filesystem->exists($translationPath)) {
-            $filesystem->remove($translationPath);
+        $translatorPath = (string) (new Path(self::$pathToRootDir))->down('TranslatorExample.php');
+
+        if ($filesystem->exists($translatorPath)) {
+            $filesystem->remove($translatorPath);
         }
     }
 }

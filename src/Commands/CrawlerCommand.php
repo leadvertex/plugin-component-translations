@@ -80,62 +80,35 @@ abstract class CrawlerCommand extends Command
         $result = [];
         foreach ($statements as $statement) {
 
-            if (is_array($statement) && isset($statement['stmts']) && is_array($statement['stmts'])) {
-                $result = array_merge($result, $this->recursion($statement['stmts']));
+            if (!is_array($statement)) {
+                continue;
             }
 
             $node = new Dot($statement);
-
-            if ($node->get('nodeType') !== 'Stmt_Expression') {
-                continue;
+            if ($node->has('expr')) {
+                if ($node->get('expr.nodeType') === 'Expr_StaticCall') {
+                    if (
+                        $node->get('expr.class.nodeType') === 'Name' &&
+                        $node->get('expr.class.parts.0') === 'Translator' &&
+                        $node->get('expr.name.nodeType') === 'Identifier' &&
+                        $node->get('expr.name.name') === 'get'
+                    ) {
+                        if (
+                            $node->get('expr.args.0.value.nodeType') === 'Scalar_String' &&
+                            $node->get('expr.args.1.value.nodeType') === 'Scalar_String'
+                        ) {
+                            $result[] = [
+                                $node->get('expr.args.0.value.value'),
+                                $node->get('expr.args.1.value.value'),
+                            ];
+                            continue;
+                        }
+                    }
+                }
             }
 
-            if ($node->get('expr.nodeType') !== 'Expr_StaticCall') {
-                continue;
-            }
+            $result = array_merge($result, $this->recursion($statement));
 
-            if ($node->get('expr.class.nodeType') !== 'Name') {
-                continue;
-            }
-
-            if ($node->get('expr.class.parts.0') !== 'Translator') {
-                continue;
-            }
-
-            if ($node->get('expr.name.nodeType') !== 'Identifier') {
-                continue;
-            }
-
-            if ($node->get('expr.name.name') !== 'get') {
-                continue;
-            }
-
-
-            if ($node->get('expr.args.0.nodeType') !== 'Arg') {
-                continue;
-            }
-
-
-            if ($node->get('expr.args.0.value.nodeType') !== 'Scalar_String') {
-                continue;
-            }
-
-
-            if ($node->get('expr.args.1.nodeType') !== 'Arg') {
-                continue;
-            }
-
-
-            if ($node->get('expr.args.1.value.nodeType') !== 'Scalar_String') {
-                continue;
-            }
-
-
-
-            $result[] = [
-                $node->get('expr.args.0.value.value'),
-                $node->get('expr.args.1.value.value'),
-            ];
         }
 
         return $result;
