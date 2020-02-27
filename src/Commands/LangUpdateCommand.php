@@ -5,10 +5,10 @@
  * @author Timur Kasumov aka XAKEPEHOK
  */
 
-namespace Leadvertex\Plugin\Components\I18n\Commands;
+namespace Leadvertex\Plugin\Components\Translations\Commands;
 
 
-use Leadvertex\Plugin\Components\I18n\Components\Helper;
+use Leadvertex\Plugin\Components\Translations\Components\Helper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 

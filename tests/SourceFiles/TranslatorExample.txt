@@ -1,0 +1,40 @@
+<?php
+
+
+namespace Leadvertex\Plugin\Components\Translations;
+
+
+class TranslatorExample
+{
+    public static function lines()
+    {
+        $message = 'Ignored message';
+        $category = 'ignored';
+        $closure = function () {
+            Translator::get('main', 'func');
+        };
+        $anonClass = new Class() {
+            public function someFunc() {
+                Translator::get('main', 'class:func');
+                $closure = function () {
+                    Translator::get('main', 'class:func:func');
+                };
+                $moreAnonClass = new Class() {
+                    public function someFunc() {
+                        Translator::get('main', 'class:func:class:func');
+                        $closure = function () {
+                            Translator::get('main', 'class:func:class:func:func');
+                        };
+                    }
+                };
+            }
+        };
+        Translator::get('main', $message);
+        Translator::get($category, 'Ignore this');
+        Translator::get('main', 'Тестовое сообщение');
+        Translator::get('second', 'Тестовое сообщение');
+        Translator::get('third', 'Тестовое сообщение');
+        Translator::get('second', '');
+        Translator::get('main', 'Сообщение с {delay}');
+    }
+}

@@ -1,0 +1,28 @@
+{
+    "main": [
+        {
+            "source": "Тестовое сообщение",
+            "translated": "Test message"
+        },
+        {
+            "source": "Сообщение с {delay}",
+            "translated": "Message with {delay}"
+        }
+    ],
+    "second": [
+        {
+            "source": "Тестовое сообщение",
+            "translated": ""
+        },
+        {
+            "source": "",
+            "translated": ""
+        }
+    ],
+    "third": [
+        {
+            "source": "Тестовое сообщение",
+            "translated": ""
+        }
+    ]
+}
