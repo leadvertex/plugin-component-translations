@@ -85,24 +85,22 @@ abstract class CrawlerCommand extends Command
             }
 
             $node = new Dot($statement);
-            if ($node->has('expr')) {
-                if ($node->get('expr.nodeType') === 'Expr_StaticCall') {
+            if ($node->get('nodeType') === 'Expr_StaticCall') {
+                if (
+                    $node->get('class.nodeType') === 'Name' &&
+                    $node->get('class.parts.0') === 'Translator' &&
+                    $node->get('name.nodeType') === 'Identifier' &&
+                    $node->get('name.name') === 'get'
+                ) {
                     if (
-                        $node->get('expr.class.nodeType') === 'Name' &&
-                        $node->get('expr.class.parts.0') === 'Translator' &&
-                        $node->get('expr.name.nodeType') === 'Identifier' &&
-                        $node->get('expr.name.name') === 'get'
+                        $node->get('args.0.value.nodeType') === 'Scalar_String' &&
+                        $node->get('args.1.value.nodeType') === 'Scalar_String'
                     ) {
-                        if (
-                            $node->get('expr.args.0.value.nodeType') === 'Scalar_String' &&
-                            $node->get('expr.args.1.value.nodeType') === 'Scalar_String'
-                        ) {
-                            $result[] = [
-                                $node->get('expr.args.0.value.value'),
-                                $node->get('expr.args.1.value.value'),
-                            ];
-                            continue;
-                        }
+                        $result[] = [
+                            $node->get('args.0.value.value'),
+                            $node->get('args.1.value.value'),
+                        ];
+                        continue;
                     }
                 }
             }

@@ -3,3 +3,4 @@
 translations/
 composer.lock
 console.php
+.phpunit.result.cache
