@@ -24,7 +24,11 @@ class Helper
 
     public static function getLanguages(): array
     {
-        $iterator = new FilesystemIterator(static::getTranslationsPath());
+        $path = static::getTranslationsPath();
+        if (!is_dir($path)) {
+            return [];
+        }
+        $iterator = new FilesystemIterator($path);
         $translations = [];
         foreach ($iterator as $info) {
             $basename = $info->getBasename('.' . $info->getExtension());
